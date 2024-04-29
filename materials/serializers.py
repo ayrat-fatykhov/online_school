@@ -20,7 +20,7 @@ class CourseSerializer(serializers.ModelSerializer):
     Переводит структуру данных в битовую последовательность
     """
     lesson_amount = serializers.SerializerMethodField()
-    lesson = LessonSerializer(many=True)
+    lesson = LessonSerializer(many=True, read_only=True)
 
     class Meta:
         """
