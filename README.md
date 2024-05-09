@@ -2,8 +2,18 @@
 
 ## Запуск приложения
 Заполнение базы данных произведено в админке.
-Для создания суперпользователя создана кастомная команда 'python3 manage.py csu'.
-Для заполнения базы данных можно воспользоваться командой 'python3 manage.py loaddata db.json'.
+Создать суперпользователя кастомной командой 'python3 manage.py csu'.
+Заполнить базу данных командой 'python3 manage.py loaddata db.json'.
+Отчет о покрытии кода тестами сохранен в файле 'online_school/coverage.txt'
+
+
+## 25.2 Валидаторы, пагинация и тесты
+### Запросы в Postman
+POST (запрос токена): http://localhost:8000/users/token/ (пример тела: {"email": "admin@sky.pro", "password": "123qwe567rty"})
+POST (проверка ссылок на видео): http://localhost:8000/lesson/create/ (пример тела: {"name": "test video", "description": "test video", "course": 2, "url": "https://www.youtube.com/watch?v=FH-TzCVymb0&t=124s"})
+POST (зарегистрировать оплату подписки): http://localhost:8000/subscriptions/create/ (пример тела: {"is_subscribed": true, "course": 2})
+GET (вывод всех курсов с пагинацией): http://localhost:8000/course/
+GET (вывод всех уроков с пагинациец): http://localhost:8000/lesson/list/ 
 
 ## 25.1 Права доступа в DRF
 ### Запросы в Postman
