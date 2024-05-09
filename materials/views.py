@@ -1,9 +1,10 @@
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 
-from materials.models import Course, Lesson
-from materials.serializers import CourseSerializer, LessonSerializer
-from users.permissons import IsModer, IsCreator
+from materials.models import Course, Lesson, CourseSubscription
+from materials.paginators import CoursePaginator, LessonPaginator
+from materials.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
+from users.permissons import IsModer, IsCreator, IsUser
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -12,6 +13,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     """
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = CoursePaginator
 
     def perform_create(self, serializer):
         course = serializer.save()
@@ -50,6 +52,7 @@ class LessonListView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = LessonPaginator
 
 
 class LessonRetrieveView(generics.RetrieveAPIView):
@@ -76,3 +79,24 @@ class LessonDestroyView(generics.DestroyAPIView):
     """
     queryset = Lesson.objects.all()
     permission_classes = [IsCreator]
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscribeSerializer
+    permission_classes = [IsAuthenticated, IsModer | IsUser]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class SubscriptionListAPIView(generics.ListAPIView):
+    serializer_class = SubscribeSerializer
+
+    def get_queryset(self):
+        return CourseSubscription.objects.filter(user=self.request.user)
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    serializer_class = SubscribeSerializer
+    queryset = CourseSubscription.objects.all()
+    permission_classes = [IsAuthenticated, IsModer | IsUser]
