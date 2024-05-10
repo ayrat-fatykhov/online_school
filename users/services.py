@@ -6,7 +6,6 @@ stripe.api_key = STRIPE_API_KEY[1:]
 
 
 def create_product(name, description):
-    print(STRIPE_API_KEY)
     product = stripe.Product.create(
         name=name,
         description=description
