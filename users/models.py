@@ -24,16 +24,16 @@ class User(AbstractUser):
 
 
 class Payment(models.Model):
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', null=True, blank=True)
-    date = models.DateTimeField(verbose_name='дата')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', **NULLABLE)
+    date = models.DateTimeField(auto_now=True, verbose_name='дата')
     payed_course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='оплаченный курс')
     payed_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='оплаченный урок')
     sum = models.PositiveIntegerField(verbose_name='сумма оплаты')
     pay_approach = models.CharField(max_length=100, verbose_name='способ оплаты')
+    session_id = models.CharField(max_length=255, verbose_name='id сессии', **NULLABLE)
+    link = models.URLField(max_length=400, verbose_name='ссылка на оплату', **NULLABLE)
 
     def __str__(self):
-
         return f'{self.payed_course} {self.payed_lesson}'
 
     class Meta:
