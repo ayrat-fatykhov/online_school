@@ -15,6 +15,8 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     city = models.CharField(max_length=150, verbose_name='страна', **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name='активность', **NULLABLE)
+    last_login = models.DateTimeField(auto_now=True, verbose_name="последний вход", **NULLABLE)
 
     #Реализуют возможность взаимодействия с пользователем через email
     #(по умолчанию установлено поле 'имя пользователя')

@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from materials.models import Course, Lesson, CourseSubscription
 from materials.paginators import CoursePaginator, LessonPaginator
 from materials.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
+from materials.tasks import send_course_update
 from users.permissons import IsModer, IsCreator, IsUser
 
 
@@ -30,6 +31,10 @@ class CourseViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = []
         return [permission() for permission in permission_classes]
+
+    def perform_update(self, serializer):
+        course_id = serializer.save(creator=self.request.user).id
+        send_course_update.delay(course_id)
 
 
 class LessonCreateView(generics.CreateAPIView):

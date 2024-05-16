@@ -6,6 +6,13 @@
 Заполнить базу данных командой 'python3 manage.py loaddata db.json'.
 Отчет о покрытии кода тестами сохранен в файле 'online_school/coverage.txt'
 
+## 26.2. Celery
+### Запросы в Postman
+PUT: http://localhost:8000/course/<pk курса>/ (пример тела: {"name": "python", "description": "python разработчик"})
+### Команды в терминале
+- celery -A config worker -l INFO
+- celery -A config beat -l info -S django (переодическая задача создана через админку; выполнить: python3 manage.py loaddata db.json)
+
 ## 26.1 Документирование и безопасность
 ### Запросы в браузере
 - http://localhost:8000/swagger/ (документация swagger)
